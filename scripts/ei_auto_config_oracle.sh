@@ -9,12 +9,12 @@
 EI_HOME=$1
 #======================================================================================================
 #oracle数据库参数
-DB_HOST=192.168.3.49
-DB_PORT=1521
-DB_SID=kyy
-DB_USERNAME=wso2ei
-DB_PASSWORD=a1b2c3
-DATASOURCE_NAME=WSO2CarbonDB
+DB_HOST=${DB_HOST:-192.168.3.49}
+DB_PORT=${DB_PORT:-1521}
+DB_SID=${DB_SID:-kyy}
+DB_USERNAME=${DB_USERNAME:-wso2ei}
+DB_PASSWORD=${DB_PASSWORD:-a1b2c3}
+DATASOURCE_NAME=${DATASOURCE_NAME:-WSO2CarbonDB}
 DB_URL=jdbc:oracle:thin:@$DB_HOST:$DB_PORT/$DB_SID
 
 #======================================================================================================

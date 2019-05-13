@@ -12,10 +12,10 @@
 #======================================================================================================
 PROCUCT_NAME=wso2ei
 PROCUCT_VERSION=6.4.0
-EI_HOST_NAME=ei.cd.mtn
-EI_HOST_PORT=9143
-EI_PORTS_OFFSET=0
-EI_IMAGE_PROFIX=gds
+EI_HOST_NAME=${EI_HOST_NAME:-ei.cd.mtn}
+EI_HOST_PORT=${EI_HOST_PORT:-9143}
+EI_PORTS_OFFSET=${EI_PORTS_OFFSET:-0}
+EI_IMAGE_PROFIX=${EI_IMAGE_PROFIX:-gds}
 #======================================================================================================
 CUR_DIR=$PWD
 if [ ! -d "$PWD/docker-ei" ]; then
