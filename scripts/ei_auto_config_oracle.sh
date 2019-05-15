@@ -3,20 +3,25 @@
 #
 #修改以下环境变量适合你的环境,其中：
 #
-#    EI_HOME                          EI业务融合服务器产品目录
+#    EI_HOME                               EI业务融合服务器产品目录
+#    DB_HOST                               EI身份管理服务器的主数据库Oracle的主机地址，如：192.168.3.49  
+#    DB_PORT                               EI身份管理服务器的主数据库Oracle的端口，如：1521
+#    DB_SID                                EI身份管理服务器的主数据库Oracle的SID，如：kyy
+#    DB_USERNAME                           EI身份管理服务器的主数据库Oracle的用户名
+#    DB_PASSWORD                           EI身份管理服务器的主数据库Oracle的密码
+#    DATASOURCE_NAME                       EI身份管理服务器的主数据库库名称
 #
 #======================================================================================================
 EI_HOME=$1
 #======================================================================================================
 #oracle数据库参数
-DB_HOST=${DB_HOST:-192.168.3.49}
-DB_PORT=${DB_PORT:-1521}
-DB_SID=${DB_SID:-kyy}
-DB_USERNAME=${DB_USERNAME:-wso2ei}
-DB_PASSWORD=${DB_PASSWORD:-a1b2c3}
-DATASOURCE_NAME=${DATASOURCE_NAME:-WSO2CarbonDB}
+DB_HOST=$2
+DB_PORT=$3
+DB_SID=$4
+DB_USERNAME=$5
+DB_PASSWORD=$6
+DATASOURCE_NAME=$7
 DB_URL=jdbc:oracle:thin:@$DB_HOST:$DB_PORT/$DB_SID
-
 #======================================================================================================
 #检查环境变量
 if [ -z "$EI_HOME" ]; then
