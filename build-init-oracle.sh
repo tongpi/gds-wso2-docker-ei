@@ -16,6 +16,7 @@ EI_HOST_NAME=${EI_HOST_NAME:-ei.cd.mtn}
 EI_HOST_PORT=${EI_HOST_PORT:-9143}
 EI_PORTS_OFFSET=${EI_PORTS_OFFSET:-0}
 EI_IMAGE_PROFIX=${EI_IMAGE_PROFIX:-gds}
+CARBON_UI_CUSTOM_EI_BRANCH=${CARBON_UI_CUSTOM_EI_BRANCH:-master}
 #======================================================================================================
 CUR_DIR=$PWD
 if [ ! -d "$PWD/docker-ei" ]; then
@@ -52,7 +53,20 @@ cp ./jdbc-drivers/*.jar $PWD/docker-ei/dockerfiles/ubuntu/integrator/files
 cp ./jdbc-drivers/*.jar $EI_HOME/lib
 echo "已复制数据库jdbc驱动到$PWD/docker-ei/dockerfiles/ubuntu/integrator/files目录下"
 #======================================================================================================
+echo "开始进行EI管理控制台个性化定制组件的安装工作"
+if [ ! -d "$PWD/carbon-ui-custom-ei" ]; then
+  git clone -b $CARBON_UI_CUSTOM_EI_BRANCH https://github.com/tongpi/carbon-ui-custom-ei.git
+else 
+  rm -Rf $PWD/carbon-ui-custom-ei
+  git clone -b $CARBON_UI_CUSTOM_EI_BRANCH https://github.com/tongpi/carbon-ui-custom-ei.git
+fi
+cd carbon-ui-custom-ei
+mvn clean install > /dev/null
+cp modules/org.wso2.carbon.ui_fragment/target/org.wso2.carbon.ui_4.4.36_fragment-1.0.0.jar ../docker-ei/dockerfiles/ubuntu/integrator/files/$PROCUCT_NAME-$PROCUCT_VERSION/dropins/
+cp modules/org.wso2.carbon.ui_patch/target/org.wso2.carbon.ui_4.4.36_patch-1.0.0.jar ../docker-ei/dockerfiles/ubuntu/integrator/files/$PROCUCT_NAME-$PROCUCT_VERSION/dropins/
+cd $CUR_DIR
 
+#======================================================================================================
 chmod +x ./scripts/*.sh
 # 自动配置及文件编码转换工作
 ./scripts/ei_auto_config.sh $EI_HOME $EI_PORTS_OFFSET
@@ -75,8 +89,9 @@ cd $CUR_DIR
 if [ ! -d "$PWD/target" ]; then
   mkdir target
 fi
-# 生成用于在系统系单独部署的zip包
-cd $PWD/docker-ei/dockerfiles/ubuntu/integrator/files 
+# 生成用于在系统单独部署的zip包
+cd $PWD/docker-ei/dockerfiles/ubuntu/integrator/files
+echo "导出EI单独部署的zip包到$PWD/target目录下"
 zip -r $CUR_DIR/target/$PROCUCT_NAME-$PROCUCT_VERSION-oracle.zip ./$PROCUCT_NAME-$PROCUCT_VERSION > /dev/null
 
 cd $CUR_DIR
